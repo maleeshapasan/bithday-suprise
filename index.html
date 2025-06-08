@@ -153,14 +153,20 @@
             margin: 15px 0;
             color: #ffcccb;
         }
+        #ytPlayer {
+            position: absolute;
+            width: 0;
+            height: 0;
+            opacity: 0;
+        }
     </style>
 </head>
 <body>
-    <!-- Music Player -->
-    <audio id="birthdayMusic" loop>
-        <source src="https://soundcloud.com/ahirueosta/thamarasa-dinesh-gamage-ft-samadhi-wijethunge?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing" type="audio/mpeg">
-        <!-- Replace with your actual music file -->
-    </audio>
+    <!-- YouTube Player -->
+    <div id="ytPlayer"></div>
+    
+    <!-- Music Fallback Button (hidden by default) -->
+    <button id="musicBtn" class="hidden" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">🔊 Play Music</button>
 
     <div class="container" id="nameForm">
         <h1>🎂 Happy Birthday My Love! 🎂</h1>
@@ -199,6 +205,42 @@
     </div>
 
     <script>
+        // YouTube API integration
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('ytPlayer', {
+                height: '0',
+                width: '0',
+                videoId: 'Z42aFor5MiM',
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 0,
+                    'disablekb': 1,
+                    'fs': 0,
+                    'loop': 1,
+                    'modestbranding': 1,
+                    'playlist': 'Z42aFor5MiM' // Needed for loop to work
+                },
+                events: {
+                    'onReady': onPlayerReady
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            // Show music button if autoplay is blocked
+            setTimeout(() => {
+                if(player.getPlayerState() !== YT.PlayerState.PLAYING) {
+                    document.getElementById('musicBtn').classList.remove('hidden');
+                }
+            }, 2000);
+        }
+
         // Create floating music notes
         function createMusicNotes() {
             const notes = ['♪', '♫', '♩', '♬', '♭', '🎵', '🎶'];
@@ -250,20 +292,33 @@
         }
 
         function playMusic() {
-            const music = document.getElementById('birthdayMusic');
-            music.volume = 0.3; // Set lower volume
-            music.play().catch(e => {
-                console.log("Auto-play prevented. User interaction needed.");
+            try {
+                player.playVideo();
+                player.setVolume(50); // Set volume to 50%
+                
+                // Show music controls button
+                document.getElementById('musicBtn').classList.remove('hidden');
+                document.getElementById('musicBtn').addEventListener('click', function() {
+                    if(player.getPlayerState() === YT.PlayerState.PLAYING) {
+                        player.pauseVideo();
+                        this.textContent = '🔊 Play Music';
+                    } else {
+                        player.playVideo();
+                        this.textContent = '🔇 Pause Music';
+                    }
+                });
+            } catch(e) {
+                console.log("Error playing YouTube video:", e);
                 // Fallback: Show play button
                 const playBtn = document.createElement('button');
                 playBtn.textContent = 'Click to Play Music';
                 playBtn.style.marginTop = '10px';
                 playBtn.onclick = () => {
-                    music.play();
+                    player.playVideo();
                     playBtn.remove();
                 };
                 document.getElementById('birthdayWish').appendChild(playBtn);
-            });
+            }
         }
 
         function createHeart() {
