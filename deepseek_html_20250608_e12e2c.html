@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Birthday Surprise!</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+        }
+        .container {
+            background-color: rgba(0,0,0,0.7);
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 90%;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        button {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background: #ff4757;
+            transform: scale(1.05);
+        }
+        input {
+            padding: 12px;
+            border-radius: 50px;
+            border: none;
+            margin: 10px 0;
+            width: 80%;
+            text-align: center;
+        }
+        .hidden {
+            display: none;
+        }
+        .heart {
+            font-size: 50px;
+            animation: pulse 1.5s infinite;
+            color: #ff6b6b;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="nameForm">
+        <h1>🎂 Birthday Surprise! 🎂</h1>
+        <p>Enter your name to reveal your special message:</p>
+        <input type="text" id="userName" placeholder="Your beautiful name">
+        <br>
+        <button onclick="showWish()">Reveal My Surprise</button>
+    </div>
+
+    <div class="container hidden" id="birthdayWish">
+        <h1 id="wishTitle">Happy Birthday, <span id="namePlaceholder"></span>! ❤️</h1>
+        <div class="heart">❤️</div>
+        <p>May your day be as wonderful as you are!</p>
+        <p>Every moment with you is special...</p>
+        <p>Wishing you all the happiness in the world!</p>
+        <div class="heart">🎂</div>
+    </div>
+
+    <script>
+        function showWish() {
+            const name = document.getElementById('userName').value.trim();
+            if(name === '') {
+                alert('Please enter your name first!');
+                return;
+            }
+            
+            document.getElementById('nameForm').classList.add('hidden');
+            document.getElementById('birthdayWish').classList.remove('hidden');
+            document.getElementById('namePlaceholder').textContent = name;
+            
+            // Add some floating hearts effect
+            for(let i = 0; i < 30; i++) {
+                createHeart();
+            }
+        }
+        
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.style.position = 'fixed';
+            heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = -10 + 'px';
+            heart.style.opacity = Math.random();
+            heart.style.animation = `fall ${Math.random() * 3 + 2}s linear forwards`;
+            
+            document.body.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 5000);
+        }
+        
+        // Add animation styles
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes fall {
+                to {
+                    transform: translateY(100vh) rotate(360deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
