@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Birthday Surprise for My Ishu ❤️</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -14,16 +15,19 @@
             text-align: center;
             color: white;
             overflow: hidden;
+            touch-action: manipulation;
         }
         .container {
             background-color: rgba(0,0,0,0.7);
             padding: 30px;
             border-radius: 15px;
-            max-width: 90%;
+            width: 90%;
+            max-width: 400px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
             position: relative;
             z-index: 10;
             animation: fadeIn 1.5s;
+            margin: 20px auto;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -32,6 +36,7 @@
         h1 {
             margin-bottom: 20px;
             text-shadow: 0 0 10px rgba(255,107,107,0.7);
+            font-size: 24px;
         }
         button {
             background: #ff6b6b;
@@ -44,6 +49,8 @@
             margin-top: 20px;
             transition: all 0.3s;
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 200px;
         }
         button:hover {
             background: #ff4757;
@@ -102,8 +109,9 @@
         }
         .love-options {
             display: flex;
-            justify-content: center;
-            gap: 20px;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
             margin-top: 15px;
         }
         .love-btn {
@@ -114,6 +122,8 @@
             transition: all 0.3s;
             border: none;
             box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 200px;
         }
         #btnYes {
             background-color: #4CAF50;
@@ -122,7 +132,7 @@
         #btnNo {
             background-color: #f44336;
             color: white;
-            position: static;
+            position: relative;
         }
         .love-response {
             margin-top: 15px;
@@ -164,9 +174,9 @@
 
     <div class="container hidden" id="birthdayWish">
         <h1 id="wishTitle">Happy Birthday, <span id="namePlaceholder" style="color:gold;">Ishu</span>! ❤️</h1>
-        <div class="heart">🌙</div>
-        <p>You are the moon in my entire life...</p>
-        <p class="memory-text">"Your light guides me through my darkest nights"</p>
+        <div class="heart">❤️</div>
+        <p>To the most beautiful soul I've ever known...</p>
+        <p class="memory-text">"Every moment with you feels like a dream I never want to wake up from"</p>
         <div class="heart">🎂</div>
         
         <!-- Love Question Section -->
@@ -184,7 +194,7 @@
         
         <!-- Final Message -->
         <div class="final-message" id="finalMessage">
-            You are the moon in my entire life.
+            You are the moon in my entire life 🌙
         </div>
     </div>
 
@@ -314,9 +324,13 @@
             
             // Make the "No" button harder to click each time
             if(noCount < 5) {
-                // Move the button randomly
-                const maxX = window.innerWidth - 100;
-                const maxY = window.innerHeight - 100;
+                // Move the button within the container only
+                const container = document.querySelector('.container');
+                const containerRect = container.getBoundingClientRect();
+                
+                const maxX = containerRect.width - btnNo.offsetWidth - 20;
+                const maxY = containerRect.height - btnNo.offsetHeight - 20;
+                
                 btnNo.style.position = 'absolute';
                 btnNo.style.left = Math.random() * maxX + 'px';
                 btnNo.style.top = Math.random() * maxY + 'px';
@@ -327,8 +341,8 @@
             } else {
                 // After 5 tries, force "Yes"
                 btnNo.style.display = 'none';
-                btnYes.style.transform = 'scale(1.5)';
-                btnYes.style.boxShadow = '0 0 20px gold';
+                btnYes.style.transform = 'scale(1.2)';
+                btnYes.style.boxShadow = '0 0 15px gold';
                 btnYes.innerHTML = "I knew you'd say Yes! ❤️";
             }
         });
