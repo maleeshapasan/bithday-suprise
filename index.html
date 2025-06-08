@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Birthday Surprise for Ishu!</title>
+    <title>Birthday Surprise for My Ishu ❤️</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -23,6 +23,15 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
             position: relative;
             z-index: 10;
+            animation: fadeIn 1.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h1 {
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255,107,107,0.7);
         }
         button {
             background: #ff6b6b;
@@ -34,10 +43,12 @@
             cursor: pointer;
             margin-top: 20px;
             transition: all 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
         button:hover {
             background: #ff4757;
             transform: scale(1.05);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
         }
         input {
             padding: 12px;
@@ -46,6 +57,7 @@
             margin: 10px 0;
             width: 80%;
             text-align: center;
+            font-size: 16px;
         }
         .hidden {
             display: none;
@@ -54,6 +66,7 @@
             font-size: 50px;
             animation: pulse 1.5s infinite;
             color: #ff6b6b;
+            margin: 15px 0;
         }
         .error {
             color: #ffcccb;
@@ -71,6 +84,7 @@
             font-size: 20px;
             animation: floatNote 5s linear infinite;
             opacity: 0.7;
+            z-index: 1;
         }
         @keyframes floatNote {
             0% { transform: translateY(0) rotate(0deg); opacity: 0; }
@@ -84,6 +98,7 @@
             background-color: rgba(255,255,255,0.2);
             border-radius: 10px;
             display: none;
+            animation: fadeIn 1s;
         }
         .love-options {
             display: flex;
@@ -98,6 +113,7 @@
             cursor: pointer;
             transition: all 0.3s;
             border: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
         #btnYes {
             background-color: #4CAF50;
@@ -115,71 +131,98 @@
             color: #ffcccb;
             animation: fadeIn 2s;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
         .final-message {
             font-size: 24px;
             margin-top: 20px;
             color: #ffcccb;
             display: none;
+            animation: fadeIn 2s;
+        }
+        .photo-frame {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 20px auto;
+            overflow: hidden;
+            border: 5px solid #ff6b6b;
+            box-shadow: 0 0 20px rgba(255,107,107,0.5);
+            animation: pulse 2s infinite;
+        }
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .memory-text {
+            font-style: italic;
+            margin: 15px 0;
+            color: #ffcccb;
+        }
+        .countdown {
+            font-size: 18px;
+            margin-top: 15px;
+            color: gold;
         }
     </style>
 </head>
 <body>
     <!-- Music Player -->
-    <div id="musicContainer" style="display:none;">
-        <iframe id="musicPlayer" width="0" height="0" src="https://www.youtube.com/embed/Z42aFor5MiM?enablejsapi=1" frameborder="0" allow="autoplay"></iframe>
-    </div>
+    <audio id="birthdayMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+        <!-- Replace with your actual music file -->
+    </audio>
 
     <div class="container" id="nameForm">
-        <h1>🎂 Special Birthday Surprise! 🎂</h1>
-        <p>Enter your cute nickname to reveal your special message:</p>
-        <input type="text" id="userName" placeholder="Type 'Ishu' here">
-        <div class="error" id="nameError">That's not your cute nickname! Try "Ishu" ❤️</div>
+        <h1>🎂 Happy Birthday My Love! 🎂</h1>
+        <p>Enter your special name to unlock your surprise:</p>
+        <input type="text" id="userName" placeholder="Type 'Ishu' here" autocomplete="off">
+        <div class="error" id="nameError">That's not your special name! Try "Ishu" ❤️</div>
         <br>
-        <button onclick="showWish()">Reveal My Surprise</button>
-        <p style="font-size:12px; margin-top:20px;">🔊 Music will play after you click the button</p>
+        <button onclick="showWish()">Unlock My Love</button>
+        <p style="font-size:12px; margin-top:20px;">🔊 Romantic music will play when you click</p>
     </div>
 
     <div class="container hidden" id="birthdayWish">
-        <h1 id="wishTitle">Happy Birthday, <span id="namePlaceholder">Ishu</span>! ❤️</h1>
+        <div class="photo-frame">
+            <!-- Replace with your actual image path -->
+            <img src="https://via.placeholder.com/150" alt="Ishu's photo" id="userPhoto">
+        </div>
+        <h1 id="wishTitle">Happy Birthday, <span id="namePlaceholder" style="color:gold;">Ishu</span>! ❤️</h1>
         <div class="heart">❤️</div>
-        <p>May your day be as wonderful as you are!</p>
-        <p>"Thamarasa" is playing because you're as precious as gold to me...</p>
-        <p>Wishing you all the happiness in the world!</p>
+        <p>To the most beautiful soul I've ever known...</p>
+        <p class="memory-text">"Every moment with you feels like a dream I never want to wake up from"</p>
         <div class="heart">🎂</div>
-        <p><small>Music: Thamarasa by Dinesh Gamage</small></p>
         
         <!-- Love Question Section -->
         <div class="love-question" id="loveQuestion">
-            <p>I have one more question for you...</p>
-            <h3>Will you love me someday?</h3>
+            <p>I have just one question for you...</p>
+            <h3>Will you be mine forever?</h3>
             <div class="love-options">
-                <button class="love-btn" id="btnYes">Yes</button>
-                <button class="love-btn" id="btnNo">No</button>
+                <button class="love-btn" id="btnYes">Yes, Always ❤️</button>
+                <button class="love-btn" id="btnNo">Maybe Later</button>
             </div>
             <div class="love-response" id="loveResponse">
-                I knew you would love me someday Ishu ❤️
+                My heart is dancing with joy! I promise to cherish you forever, Ishu ❤️
             </div>
         </div>
         
         <!-- Final Message -->
         <div class="final-message" id="finalMessage">
-            This memory will stay in my heart forever...
+            Our story is just beginning... I can't wait for all our tomorrows together 🌹
         </div>
+        
+        <div class="countdown" id="countdown"></div>
     </div>
 
     <script>
         // Create floating music notes
         function createMusicNotes() {
-            const notes = ['♪', '♫', '♩', '♬', '♭'];
+            const notes = ['♪', '♫', '♩', '♬', '♭', '🎵', '🎶'];
             const note = document.createElement('div');
             note.className = 'music-note';
             note.textContent = notes[Math.floor(Math.random() * notes.length)];
             note.style.left = Math.random() * 100 + 'vw';
-            note.style.top = Math.random() * 100 + 'vh';
+            note.style.top = (Math.random() * 100 + 100) + 'vh';
             note.style.fontSize = (Math.random() * 20 + 10) + 'px';
             note.style.animationDuration = (Math.random() * 3 + 3) + 's';
             note.style.animationDelay = (Math.random() * 2) + 's';
@@ -212,44 +255,46 @@
             playMusic();
             
             // Add some floating hearts effect
-            for(let i = 0; i < 30; i++) {
-                createHeart();
+            for(let i = 0; i < 50; i++) {
+                setTimeout(createHeart, i * 100);
             }
             
-            // Show love question after 3 seconds
+            // Show love question after 5 seconds
             setTimeout(() => {
                 document.getElementById('loveQuestion').style.display = 'block';
-            }, 3000);
+            }, 5000);
+            
+            // Start countdown
+            startCountdown();
         }
 
         function playMusic() {
-            // Show the hidden container
-            document.getElementById('musicContainer').style.display = 'block';
-            
-            // Get reference to the iframe
-            const iframe = document.getElementById('musicPlayer');
-            
-            // Wait for iframe to load
-            iframe.onload = function() {
-                // This triggers the play action after user interaction
-                iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
-            };
-            
-            // Alternative method for mobile devices
-            setTimeout(() => {
-                iframe.src += "&autoplay=1";
-            }, 1000);
+            const music = document.getElementById('birthdayMusic');
+            music.volume = 0.3; // Set lower volume
+            music.play().catch(e => {
+                console.log("Auto-play prevented. User interaction needed.");
+                // Fallback: Show play button
+                const playBtn = document.createElement('button');
+                playBtn.textContent = 'Click to Play Music';
+                playBtn.style.marginTop = '10px';
+                playBtn.onclick = () => {
+                    music.play();
+                    playBtn.remove();
+                };
+                document.getElementById('birthdayWish').appendChild(playBtn);
+            });
         }
 
         function createHeart() {
             const heart = document.createElement('div');
-            heart.innerHTML = '❤️';
+            heart.innerHTML = ['❤️', '💖', '💗', '💓', '💞', '💕'][Math.floor(Math.random()*6)];
             heart.style.position = 'fixed';
             heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
             heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.top = -10 + 'px';
+            heart.style.top = (Math.random() * 100 + 100) + 'vh';
             heart.style.opacity = Math.random();
             heart.style.animation = `fall ${Math.random() * 3 + 2}s linear forwards`;
+            heart.style.zIndex = '1';
             
             document.body.appendChild(heart);
             
@@ -264,8 +309,11 @@
             document.getElementById('loveQuestion').style.display = 'none';
             
             // Add celebration effects
-            for(let i = 0; i < 50; i++) {
-                createHeart();
+            for(let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    createHeart();
+                    if(i % 10 === 0) createFirework();
+                }, i * 50);
             }
             
             // Show final message after 2 seconds
@@ -275,10 +323,23 @@
         });
 
         let noCount = 0;
+        const romanticPhrases = [
+            "Are you sure?",
+            "Think again my love",
+            "I'll wait forever",
+            "My heart believes in us",
+            "Just say yes ❤️"
+        ];
+        
         document.getElementById('btnNo').addEventListener('click', function() {
             noCount++;
             const btnNo = document.getElementById('btnNo');
             const btnYes = document.getElementById('btnYes');
+            
+            // Change the "No" button text
+            if(noCount <= romanticPhrases.length) {
+                btnNo.textContent = romanticPhrases[noCount-1];
+            }
             
             // Make the "No" button harder to click each time
             if(noCount < 5) {
@@ -291,13 +352,49 @@
                 
                 // Make "Yes" button more appealing
                 btnYes.style.transform = `scale(${1 + noCount*0.1})`;
+                btnYes.style.boxShadow = `0 0 ${5 + noCount*2}px gold`;
             } else {
                 // After 5 tries, force "Yes"
                 btnNo.style.display = 'none';
                 btnYes.style.transform = 'scale(1.5)';
-                btnYes.innerHTML = "Please click Yes ❤️";
+                btnYes.style.boxShadow = '0 0 20px gold';
+                btnYes.innerHTML = "I knew you'd say Yes! ❤️";
             }
         });
+
+        function createFirework() {
+            const firework = document.createElement('div');
+            firework.style.position = 'fixed';
+            firework.style.left = Math.random() * 100 + 'vw';
+            firework.style.top = Math.random() * 100 + 'vh';
+            firework.style.width = '5px';
+            firework.style.height = '5px';
+            firework.style.borderRadius = '50%';
+            firework.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+            firework.style.boxShadow = `0 0 10px 2px hsl(${Math.random() * 360}, 100%, 50%)`;
+            firework.style.animation = 'explode 1s ease-out forwards';
+            document.body.appendChild(firework);
+            
+            setTimeout(() => {
+                firework.remove();
+            }, 1000);
+        }
+
+        function startCountdown() {
+            const countdownElement = document.getElementById('countdown');
+            let seconds = 60;
+            
+            const timer = setInterval(() => {
+                seconds--;
+                countdownElement.textContent = `Next surprise in: ${seconds}s`;
+                
+                if(seconds <= 0) {
+                    clearInterval(timer);
+                    countdownElement.textContent = "Surprise time! Check your phone 😘";
+                    // Here you could trigger a real-world surprise
+                }
+            }, 1000);
+        }
 
         // Auto-focus on input field
         document.getElementById('userName').focus();
@@ -314,9 +411,13 @@
         style.innerHTML = `
             @keyframes fall {
                 to {
-                    transform: translateY(100vh) rotate(360deg);
+                    transform: translateY(-100vh) rotate(360deg);
                     opacity: 0;
                 }
+            }
+            @keyframes explode {
+                0% { transform: scale(1); opacity: 1; }
+                100% { transform: scale(20); opacity: 0; }
             }
         `;
         document.head.appendChild(style);
