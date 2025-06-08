@@ -138,37 +138,17 @@
             display: none;
             animation: fadeIn 2s;
         }
-        .photo-frame {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            margin: 20px auto;
-            overflow: hidden;
-            border: 5px solid #ff6b6b;
-            box-shadow: 0 0 20px rgba(255,107,107,0.5);
-            animation: pulse 2s infinite;
-        }
-        .photo-frame img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
         .memory-text {
             font-style: italic;
             margin: 15px 0;
             color: #ffcccb;
-        }
-        .countdown {
-            font-size: 18px;
-            margin-top: 15px;
-            color: gold;
         }
     </style>
 </head>
 <body>
     <!-- Music Player -->
     <audio id="birthdayMusic" loop>
-        <source src="https://soundcloud.com/ahirueosta/thamarasa-dinesh-gamage-ft-samadhi-wijethunge?utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
         <!-- Replace with your actual music file -->
     </audio>
 
@@ -183,14 +163,10 @@
     </div>
 
     <div class="container hidden" id="birthdayWish">
-        <div class="photo-frame">
-            <!-- Replace with your actual image path -->
-            <img src="https://via.placeholder.com/150" alt="Ishu's photo" id="userPhoto">
-        </div>
         <h1 id="wishTitle">Happy Birthday, <span id="namePlaceholder" style="color:gold;">Ishu</span>! ❤️</h1>
-        <div class="heart">❤️</div>
-        <p>To the most beautiful soul I've ever known...</p>
-        <p class="memory-text">"Every moment with you feels like a dream I never want to wake up from"</p>
+        <div class="heart">🌙</div>
+        <p>You are the moon in my entire life...</p>
+        <p class="memory-text">"Your light guides me through my darkest nights"</p>
         <div class="heart">🎂</div>
         
         <!-- Love Question Section -->
@@ -208,10 +184,8 @@
         
         <!-- Final Message -->
         <div class="final-message" id="finalMessage">
-            Our story is just beginning... I can't wait for all our tomorrows together 🌹
+            You are the moon in my entire life.
         </div>
-        
-        <div class="countdown" id="countdown"></div>
     </div>
 
     <script>
@@ -263,9 +237,6 @@
             setTimeout(() => {
                 document.getElementById('loveQuestion').style.display = 'block';
             }, 5000);
-            
-            // Start countdown
-            startCountdown();
         }
 
         function playMusic() {
@@ -377,22 +348,6 @@
             
             setTimeout(() => {
                 firework.remove();
-            }, 1000);
-        }
-
-        function startCountdown() {
-            const countdownElement = document.getElementById('countdown');
-            let seconds = 60;
-            
-            const timer = setInterval(() => {
-                seconds--;
-                countdownElement.textContent = `Next surprise in: ${seconds}s`;
-                
-                if(seconds <= 0) {
-                    clearInterval(timer);
-                    countdownElement.textContent = "Surprise time! Check your phone 😘";
-                    // Here you could trigger a real-world surprise
-                }
             }, 1000);
         }
 
