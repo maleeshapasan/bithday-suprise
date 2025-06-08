@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Birthday Surprise!</title>
+    <title>Birthday Surprise for Ishu!</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -13,6 +13,7 @@
             align-items: center;
             text-align: center;
             color: white;
+            overflow: hidden;
         }
         .container {
             background-color: rgba(0,0,0,0.7);
@@ -20,6 +21,8 @@
             border-radius: 15px;
             max-width: 90%;
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 10;
         }
         button {
             background: #ff6b6b;
@@ -52,42 +55,95 @@
             animation: pulse 1.5s infinite;
             color: #ff6b6b;
         }
+        .error {
+            color: #ffcccb;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.3); }
             100% { transform: scale(1); }
         }
+        .music-note {
+            position: absolute;
+            font-size: 20px;
+            animation: floatNote 5s linear infinite;
+            opacity: 0.7;
+        }
+        @keyframes floatNote {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+        }
     </style>
 </head>
 <body>
+    <!-- YouTube Music Player (Hidden) -->
+    <iframe id="musicPlayer" width="0" height="0" src="https://www.youtube.com/embed/Z42aFor5MiM?enablejsapi=1" frameborder="0" allow="autoplay"></iframe>
+
     <div class="container" id="nameForm">
-        <h1>🎂 Birthday Surprise! 🎂</h1>
-        <p>Enter your name to reveal your special message:</p>
-        <input type="text" id="userName" placeholder="Your beautiful name">
+        <h1>🎂 Special Birthday Surprise! 🎂</h1>
+        <p>Enter your cute nickname to reveal your special message:</p>
+        <input type="text" id="userName" placeholder="Type 'Ishu' here">
+        <div class="error" id="nameError">That's not your cute nickname! Try "Ishu" ❤️</div>
         <br>
         <button onclick="showWish()">Reveal My Surprise</button>
     </div>
 
     <div class="container hidden" id="birthdayWish">
-        <h1 id="wishTitle">Happy Birthday, <span id="namePlaceholder"></span>! ❤️</h1>
+        <h1 id="wishTitle">Happy Birthday, <span id="namePlaceholder">Ishu</span>! ❤️</h1>
         <div class="heart">❤️</div>
         <p>May your day be as wonderful as you are!</p>
-        <p>Every moment with you is special...</p>
+        <p>"Thamarasa" is playing because you're as precious as gold to me...</p>
         <p>Wishing you all the happiness in the world!</p>
         <div class="heart">🎂</div>
+        <p><small>Music: Thamarasa by Dinesh Gamage</small></p>
     </div>
 
     <script>
+        // Create floating music notes
+        function createMusicNotes() {
+            const notes = ['♪', '♫', '♩', '♬', '♭'];
+            const note = document.createElement('div');
+            note.className = 'music-note';
+            note.textContent = notes[Math.floor(Math.random() * notes.length)];
+            note.style.left = Math.random() * 100 + 'vw';
+            note.style.top = Math.random() * 100 + 'vh';
+            note.style.fontSize = (Math.random() * 20 + 10) + 'px';
+            note.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            note.style.animationDelay = (Math.random() * 2) + 's';
+            document.body.appendChild(note);
+            
+            setTimeout(() => {
+                note.remove();
+            }, 6000);
+        }
+
+        // Start music notes animation
+        setInterval(createMusicNotes, 300);
+
         function showWish() {
             const name = document.getElementById('userName').value.trim();
-            if(name === '') {
-                alert('Please enter your name first!');
+            const errorElement = document.getElementById('nameError');
+            
+            // Check if name is "Ishu" (case insensitive)
+            if(!name.match(/^ishu$/i)) {
+                errorElement.style.display = 'block';
+                document.getElementById('userName').focus();
                 return;
             }
             
+            errorElement.style.display = 'none';
             document.getElementById('nameForm').classList.add('hidden');
             document.getElementById('birthdayWish').classList.remove('hidden');
             document.getElementById('namePlaceholder').textContent = name;
+            
+            // Start playing music (Thamarasa)
+            const musicPlayer = document.getElementById('musicPlayer');
+            musicPlayer.src += "&autoplay=1";
             
             // Add some floating hearts effect
             for(let i = 0; i < 30; i++) {
@@ -123,6 +179,16 @@
             }
         `;
         document.head.appendChild(style);
+
+        // Auto-focus on input field
+        document.getElementById('userName').focus();
+        
+        // Allow Enter key to submit
+        document.getElementById('userName').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                showWish();
+            }
+        });
     </script>
 </body>
 </html>
