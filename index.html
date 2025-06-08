@@ -153,20 +153,19 @@
             margin: 15px 0;
             color: #ffcccb;
         }
-        #ytPlayer {
-            position: absolute;
-            width: 0;
-            height: 0;
-            opacity: 0;
-        }
     </style>
 </head>
 <body>
-    <!-- YouTube Player -->
-    <div id="ytPlayer"></div>
+    <!-- Audio Player -->
+    <audio id="birthdayMusic" loop>
+        <source src="https://drive.google.com/uc?export=download&id=1EkEJH4gkHer7I-TtFfDV0WkKWWxMZPgG" type="audio/mpeg">
+    </audio>
     
-    <!-- Music Fallback Button (hidden by default) -->
-    <button id="musicBtn" class="hidden" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000;">🔊 Play Music</button>
+    <!-- Music Button -->
+    <button id="musicBtn" style="position: fixed; bottom: 20px; right: 20px; z-index: 1000; display: none;
+            padding: 10px 15px; border-radius: 20px; background: #ff6b6b; color: white; border: none;">
+        🔊 Play Thamarasa Song
+    </button>
 
     <div class="container" id="nameForm">
         <h1>🎂 Happy Birthday My Love! 🎂</h1>
@@ -185,7 +184,6 @@
         <p class="memory-text">"Every moment with you feels like a dream I never want to wake up from"</p>
         <div class="heart">🎂</div>
         
-        <!-- Love Question Section -->
         <div class="love-question" id="loveQuestion">
             <p>I have just one question for you...</p>
             <h3>Will you be mine forever?</h3>
@@ -198,49 +196,12 @@
             </div>
         </div>
         
-        <!-- Final Message -->
         <div class="final-message" id="finalMessage">
             You are the moon in my entire life 🌙
         </div>
     </div>
 
     <script>
-        // YouTube API integration
-        var tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-        var player;
-        function onYouTubeIframeAPIReady() {
-            player = new YT.Player('ytPlayer', {
-                height: '0',
-                width: '0',
-                videoId: 'Z42aFor5MiM',
-                playerVars: {
-                    'autoplay': 0,
-                    'controls': 0,
-                    'disablekb': 1,
-                    'fs': 0,
-                    'loop': 1,
-                    'modestbranding': 1,
-                    'playlist': 'Z42aFor5MiM' // Needed for loop to work
-                },
-                events: {
-                    'onReady': onPlayerReady
-                }
-            });
-        }
-
-        function onPlayerReady(event) {
-            // Show music button if autoplay is blocked
-            setTimeout(() => {
-                if(player.getPlayerState() !== YT.PlayerState.PLAYING) {
-                    document.getElementById('musicBtn').classList.remove('hidden');
-                }
-            }, 2000);
-        }
-
         // Create floating music notes
         function createMusicNotes() {
             const notes = ['♪', '♫', '♩', '♬', '♭', '🎵', '🎶'];
@@ -292,33 +253,36 @@
         }
 
         function playMusic() {
-            try {
-                player.playVideo();
-                player.setVolume(50); // Set volume to 50%
-                
-                // Show music controls button
-                document.getElementById('musicBtn').classList.remove('hidden');
-                document.getElementById('musicBtn').addEventListener('click', function() {
-                    if(player.getPlayerState() === YT.PlayerState.PLAYING) {
-                        player.pauseVideo();
-                        this.textContent = '🔊 Play Music';
-                    } else {
-                        player.playVideo();
-                        this.textContent = '🔇 Pause Music';
-                    }
+            const music = document.getElementById('birthdayMusic');
+            const musicBtn = document.getElementById('musicBtn');
+            
+            // Set volume to 50%
+            music.volume = 0.5;
+            
+            // Try autoplay
+            const playPromise = music.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    // Autoplay worked - hide button after 3 seconds
+                    setTimeout(() => {
+                        musicBtn.style.display = 'none';
+                    }, 3000);
+                })
+                .catch(error => {
+                    // Autoplay prevented - show play button
+                    musicBtn.style.display = 'block';
                 });
-            } catch(e) {
-                console.log("Error playing YouTube video:", e);
-                // Fallback: Show play button
-                const playBtn = document.createElement('button');
-                playBtn.textContent = 'Click to Play Music';
-                playBtn.style.marginTop = '10px';
-                playBtn.onclick = () => {
-                    player.playVideo();
-                    playBtn.remove();
-                };
-                document.getElementById('birthdayWish').appendChild(playBtn);
             }
+            
+            // Setup music button functionality
+            musicBtn.addEventListener('click', () => {
+                music.play();
+                musicBtn.textContent = '🎵 Playing...';
+                setTimeout(() => {
+                    musicBtn.style.display = 'none';
+                }, 2000);
+            });
         }
 
         function createHeart() {
